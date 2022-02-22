@@ -1,0 +1,32 @@
+# Refer to https://circleci.com/docs/2.0/language-ruby/ for base version
+
+version: 2.1 # Use 2.1 to enable using orbs and other features.
+
+# Declare the orbs that we'll use in our config.
+# read more about orbs: https://circleci.com/docs/2.0/orb-intro/
+orbs: 
+  ruby: circleci/ruby@1.4.0
+
+jobs:
+  test:
+    # we run "parallel job containers" to enable speeding up our tests;
+    # this splits our tests across multiple containers.
+    # Uncomment the following line to enable parallelism
+    # parallelism: 3
+    docker:
+      - image: ruby:3.0.2
+    # environment variables specific to Ruby/Rails, applied to the primary container.
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      RAILS_ENV: test
+    steps:
+      - checkout
+      - ruby/install-deps
+      - ruby/rspec-test
+
+workflows:
+  version: 2
+  test:               # The name of our workflow is "test"
+    jobs:             # The list of jobs we run as part of this workflow.
+      - test          # Then run test.
