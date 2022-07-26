@@ -1,0 +1,8 @@
+--- 
+- 
+  fullpath: /api/v4/users
+  request_method: POST
+  response:
+    status:
+      code: 201
+      message: Created
